@@ -1,0 +1,105 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# `{enum}`
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+## Installation
+
+You can install the development version of `{enum}` like so:
+
+``` r
+pak::pak("jmbarbone/enum")
+```
+
+## Example
+
+`enum()` will create a set of Enum values.
+
+```{r}
+#| label: example
+library(enum)
+hex <- enum(letters[1:6], 0:9)
+hex
+hex(c(1, 5, "a", 6, "f", 0)) # valid that inputs are part of enum set
+try(hex(c(1, 5, "a", "j"))) # throws error when invalid input is given
+```
+
+This can be very useful for validating function arguments.
+Since `enum()` returns an `enum` object and can accept an `enum` object
+
+```{r}
+#| label: example function args
+Shapes <- enum(
+  triangle = 3, 
+  square = 4, 
+  pentagon = 5, 
+  hexagon = 6
+)
+
+angles <- function(shape = Shapes) {
+  sides <- Shapes(shape) # validate input
+  (sides - 2) * 180 / sides
+}
+
+angles("triangle")
+angles("square")
+try(angles("circle")) # throws error when invalid input is given
+```
+
+You can pass one `enum` into another, safely, if the values are compatible.
+
+```{r}
+#| label: enum compatibility
+FunShapes <- enum(
+  circle = "A round shape",
+  square = "A shape with four equal sides",
+  triangle = "A shape with three sides",
+  rectangle = "A shape with four sides and equal opposite sides",
+  pentagon = "A shape with five sides",
+  hexagon = "A shape with six sides",
+  oval = "An elongated circle",
+  star = "A shape with points radiating from a center",
+  heart = "A shape symbolizing love"
+)
+
+FunShapes(Shapes)
+# but not
+try(Shapes(FunShapes))
+```
+
+Fore more specific error handling, you can name your `enum` class with the `Enum()` variant:
+
+```{r}
+#| label: named enums
+Colors := Enum(
+  Cyan = "#00FFFF",
+  Magenta = "#FF00FF",
+  Yellow = "#FFFF00"
+)
+
+Colors("Magenta")
+try(Colors("Blue"))
+tryCatch(
+  Colors("Red"),
+  Colors_enum_error = function(e) {
+    message("Caught an enum_error: <", conditionMessage(e), ">")
+  }
+)
+```

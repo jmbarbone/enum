@@ -1,0 +1,22 @@
+Package: enum
+Type: Package
+Title: Enum Classes
+Version: 0.0.1
+Authors@R: person(
+    "Jordan Mark", "Barbone",
+    email = "jmbarbone@gmail.com",
+    role = c("aut", "cph", "cre"),
+    comment = c(ORCID = "0000-0001-9788-3628")
+    )
+Description: Creates enum classes.  Enum classes are controls sets that allow
+    users to specify specific choices for options or categories.  Enums are
+    present in many other programming languages and offer more support than
+    using factors.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Language: en-US
+RoxygenNote: 7.3.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
