@@ -84,7 +84,7 @@ enum <- function(values, ...) {
   names(values) <- names(values) %||% values
 
   if (anyDuplicated(values)) {
-    stop("Enum values must be unique.")
+    stop(error_duplicate_enum(values))
   }
 
   local({
@@ -105,11 +105,6 @@ enum <- function(values, ...) {
 }
 
 new_enum <- function(.., .enums) {
-  retrieve <- function(v) {
-    get0(v, envir = .enums, inherits = FALSE) %||%
-      stop(enum_error(v, ..$name))
-  }
-
   enum_ <- function(value) {
     if (missing(value)) {
       return(..$list())
@@ -119,28 +114,18 @@ new_enum <- function(.., .enums) {
       return(enum_(value$names))
     }
 
-    as.vector(lapply(value, retrieve), ..$type)
+    get_enum(.., .enums, value)
   }
 
   class(enum_) <- "enum"
   enum_
 }
 
-enum_error <- function(value, name) {
-  enum_name <- if (is.null(name)) {
-    "enum"
-  } else {
-    sprintf("Enum{%s}", name)
+
+get_enum <- function(.., .enums, values) {
+  # mget() doesn't throw any particular error
+  get_enum_ <- function(v) {
+    get0(v, .enums, inherits = FALSE) %||% stop(error_get_enum(v, ..$name))
   }
-
-  msg <- sprintf("'%s' is not a valid %s value", value, enum_name)
-
-  classes <- c(
-    if (!is.null(name)) paste0(name, "_enum_error"),
-    "enum_error",
-    "error",
-    "condition"
-  )
-
-  structure(list(message = msg, call = NULL), class = classes)
+  as.vector(lapply(values, get_enum_), mode = ..$type)
 }

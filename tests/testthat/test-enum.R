@@ -20,7 +20,7 @@ test_that("enum() works", {
 test_that("enum() errors", {
   expect_error(
     enum(1, 2, 2),
-    "Enum values must be unique."
+    class = "duplicate_enum_error",
   )
 
   expect_error(
@@ -30,7 +30,7 @@ test_that("enum() errors", {
 
   expect_error(
     Enum("Shapes", "Circle")("Square"),
-    class = "Shapes_enum_error",
+    class = "enum_error:Shapes",
   )
 })
 
