@@ -18,7 +18,7 @@ You can install the development version of `{enum}` like so:
 pak::pak("jmbarbone/enum")
 ```
 
-## Example
+## Examples
 
 `enum()` will create a set of Enum values.
 
@@ -96,6 +96,70 @@ FunShapes(Shapes)
 try(Shapes(FunShapes))
 #> Error : 'circle' is not a valid enum value
 ```
+
+`enum`s are not type limited. You can specify mixed typing as long as
+they conform to basic `c(...)` handling properties.
+
+``` r
+FormatOpts := Enum(
+  hook = function(x) trimws(x),
+  digits = 4L,
+  justify = "right"
+)
+
+FormatOpts
+#> <Enum{FormatOpts}>
+#>   hook    : function (x) , trimws(x)
+#>   digits  : 4
+#>   justify : right
+FormatOpts(FormatOpts)
+#> [[1]]
+#> function (x) 
+#> trimws(x)
+#> <environment: 0x63356eae7a98>
+#> 
+#> [[2]]
+#> [1] 4
+#> 
+#> [[3]]
+#> [1] "right"
+```
+
+``` r
+# c() will combine to a common type
+ValueOptsVec := Enum(
+  numeric = 1.0,
+  integer = 1L,
+  character = "one",
+  logical = TRUE
+)
+
+ValueOptsVec(ValueOptsVec)
+#> [1] "1"    "1"    "one"  "TRUE"
+
+# specify as list() to preserve types
+ValueOptionsList := Enum(
+  numeric = list(1.0),
+  integer = list(1L),
+  character = list("one"),
+  logical = list(TRUE)
+)
+
+ValueOptionsList(ValueOptionsList)
+#> [[1]]
+#> [1] 1
+#> 
+#> [[2]]
+#> [1] 1
+#> 
+#> [[3]]
+#> [1] "one"
+#> 
+#> [[4]]
+#> [1] TRUE
+```
+
+## Errors
 
 Fore more specific error handling, you can name your `enum` class with
 the `Enum()` variant:

@@ -30,7 +30,7 @@ You can install the development version of `{enum}` like so:
 pak::pak("jmbarbone/enum")
 ```
 
-## Example
+## Examples
 
 `enum()` will create a set of Enum values.
 
@@ -85,6 +85,48 @@ FunShapes(Shapes)
 # but not
 try(Shapes(FunShapes))
 ```
+
+`enum`s are not type limited.
+You can specify mixed typing as long as they conform to basic `c(...)` handling properties.
+
+```{r}
+#| label: mixed types
+FormatOpts := Enum(
+  hook = function(x) trimws(x),
+  digits = 4L,
+  justify = "right"
+)
+
+FormatOpts
+FormatOpts(FormatOpts)
+```
+
+
+```{r}
+#| label: mixed types 2
+
+# c() will combine to a common type
+ValueOptsVec := Enum(
+  numeric = 1.0,
+  integer = 1L,
+  character = "one",
+  logical = TRUE
+)
+
+ValueOptsVec(ValueOptsVec)
+
+# specify as list() to preserve types
+ValueOptionsList := Enum(
+  numeric = list(1.0),
+  integer = list(1L),
+  character = list("one"),
+  logical = list(TRUE)
+)
+
+ValueOptionsList(ValueOptionsList)
+```
+
+## Errors
 
 Fore more specific error handling, you can name your `enum` class with the `Enum()` variant:
 
