@@ -88,3 +88,8 @@ format.enum <- function(x, ...) {
     vec
   )
 }
+
+#' @export
+levels.enum <- function(x) {
+  environment(x)$..$names
+}
