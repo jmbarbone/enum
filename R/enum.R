@@ -81,10 +81,17 @@ Enum <- function(name, ...) {
 #' @rdname enum
 enum <- function(values, ...) {
   values <- c(if (!missing(values)) values, ...)
-  names(values) <- names(values) %||% values
+  nms <- names(values)
+  if (is.list(values)) {
+    if (is.null(nms)) {
+      stop(error_unnamed_enum())
+    }
+  }
+  nms <- names(values) %||% as.character(values)
+  names(values) <- nms
 
-  if (anyDuplicated(values)) {
-    stop(error_duplicate_enum(values))
+  if (anyDuplicated(nms)) {
+    stop(error_duplicated_enum(nms))
   }
 
   local({
@@ -93,7 +100,7 @@ enum <- function(values, ...) {
       list(
         get = function(name) base::get(name, .enums, inherits = FALSE),
         list = function() mget(..$names, .enums, inherits = FALSE),
-        names = names(values),
+        names = nms,
         type = typeof(values),
         name = NULL,
         enums = new.env()

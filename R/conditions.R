@@ -1,10 +1,16 @@
-error_duplicate_enum <- function(values) {
+error_unnamed_enum <- function() {
+  msg <- "Enum values must be named when provided as a list"
+  classes <- c("unnamed_enum_error", "enum_error", "error", "condition")
+  structure(list(message = msg, call = NULL), class = classes)
+}
+
+error_duplicated_enum <- function(values) {
   bad <- unique(values[duplicated(values)])
   msg <- paste(
     "Enum values must be unique. The following values are duplicated:",
     toString(bad)
   )
-  classes <- c("duplicate_enum_error", "enum_error", "error", "condition")
+  classes <- c("duplicated_enum_error", "enum_error", "error", "condition")
   structure(list(message = msg, call = NULL), class = classes)
 }
 

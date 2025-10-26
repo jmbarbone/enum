@@ -19,8 +19,22 @@ test_that("enum() works", {
 
 test_that("enum() errors", {
   expect_error(
+    enum(list(1), 2),
+    class = "unnamed_enum_error",
+  )
+
+  expect_error(
     enum(1, 2, 2),
-    class = "duplicate_enum_error",
+    class = "duplicated_enum_error",
+  )
+
+  expect_no_error(
+    enum(a = 1, b = 1),
+  )
+
+  expect_error(
+    enum(a = 1, a = 2),
+    class = "duplicated_enum_error",
   )
 
   expect_error(
