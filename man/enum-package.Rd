@@ -7,6 +7,13 @@
 \description{
 Creates enum classes. Enum classes are controls sets that allow users to specify specific choices for options or categories. Enums are present in many other programming languages and offer more support than using factors.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://jmbarbone.github.io/enum/}
+}
+
+}
 \author{
 \strong{Maintainer}: Jordan Mark Barbone \email{jmbarbone@gmail.com} (\href{https://orcid.org/0000-0001-9788-3628}{ORCID}) [copyright holder]
 

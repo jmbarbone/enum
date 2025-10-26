@@ -3,6 +3,7 @@
 S3method("$",enum)
 S3method("@",enum)
 S3method(format,enum)
+S3method(levels,enum)
 S3method(print,enum)
 S3method(utils::.AtNames,enum)
 S3method(utils::.DollarNames,enum)
