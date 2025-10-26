@@ -82,11 +82,10 @@ Enum <- function(name, ...) {
 enum <- function(values, ...) {
   values <- c(if (!missing(values)) values, ...)
   nms <- names(values)
-  if (is.list(values)) {
-    if (is.null(nms)) {
-      stop(error_unnamed_enum())
-    }
+  if (is.list(values) && is.null(nms)) {
+    stop(error_unnamed_enum())
   }
+
   nms <- names(values) %||% as.character(values)
   names(values) <- nms
 
@@ -128,11 +127,11 @@ new_enum <- function(.., .enums) {
   enum_
 }
 
-
 get_enum <- function(.., .enums, values) {
   # mget() doesn't throw any particular error
   get_enum_ <- function(v) {
     get0(v, .enums, inherits = FALSE) %||% stop(error_get_enum(v, ..$name))
   }
-  as.vector(lapply(values, get_enum_), mode = ..$type)
+
+  as.vector(lapply(as.character(values), get_enum_), mode = ..$type)
 }
