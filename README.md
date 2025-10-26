@@ -113,7 +113,7 @@ try(Colors("Blue"))
 #> Error : 'Blue' is not a valid Enum{Colors} value
 tryCatch(
   Colors("Red"),
-  Colors_enum_error = function(e) {
+  `enum_error:Colors` = function(e) {
     message("Caught an enum_error: <", conditionMessage(e), ">")
   }
 )
